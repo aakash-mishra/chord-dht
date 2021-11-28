@@ -1,24 +1,35 @@
 public class Driver {
     public static void main(String[] args) {
+        /***
+         *
+         * Below is a network with 4 nodes (m = 4)
+         */
         /*
         ChordNode n0 = new ChordNode(0);
-        ChordNode n1 = new ChordNode(1);
-        ChordNode n2 = new ChordNode(3);
-//        ChordNode n3 = new ChordNode(12);
+        ChordNode n1 = new ChordNode(7);
+        ChordNode n2 = new ChordNode(10);
+        ChordNode n3 = new ChordNode(13);
         n0.join(null);
         n1.join(n0);
         n2.join(n1);
-//        n3.join(n2);
+        n3.join(n2);
         System.out.println("NO FT:");
         n0.printFingerTable();
         System.out.println("N1 FT:");
         n1.printFingerTable();
         System.out.println("N2 FT:");
         n2.printFingerTable();
-//        System.out.println("N3 FT:");
-//        n3.printFingerTable();
+        System.out.println("N3 FT:");
+        n3.printFingerTable();
         */
 
+        /***
+         *
+         * Below is a network with 8 nodes (m = 8)
+         */
+
+
+        /*
         ChordNode n0 = new ChordNode(0);
         ChordNode n1 = new ChordNode(30);
         ChordNode n2 = new ChordNode(65); //{1,2,4,8,16,32,64,128}
@@ -63,7 +74,7 @@ public class Driver {
         n3.printDataOnNode();
         n4.printDataOnNode();
         n5.printDataOnNode();
-//        */
+        */
 
     }
 }
