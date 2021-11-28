@@ -1,9 +1,13 @@
+import java.util.HashMap;
+import java.util.Map;
+
 import static constants.Constants.m;
 
 public class ChordNode {
     int id;
     ChordNode pred;
     Finger[] finger;
+    Map<Integer, Integer> data;
 
     public ChordNode(int id) {
         this.id = id;
@@ -55,9 +59,11 @@ public class ChordNode {
     }
     private void updateFingerTable(ChordNode s, int i) {
         int successorId = this.finger[i].getSuccessor().id;
-        if(isInBetweenCloseOpen(s.id, this.id, successorId)) {
-            finger[i].setSuccessor(s);
-//            this.pred.updateFingerTable(s, i);
+        if(s.id != this.id) {
+            if (isInBetweenCloseOpen(s.id, this.id, successorId)) {
+                finger[i].setSuccessor(s);
+                this.pred.updateFingerTable(s, i);
+            }
         }
     }
 
@@ -66,20 +72,6 @@ public class ChordNode {
            System.out.println("start: " + finger[i].getStart() + " end: " + finger[i].getEnd() +
                                     " successor node id:" + finger[i].getSuccessor().id);
        }
-    }
-
-    private boolean isInBetweenOpenClose(int key, int startId, int endId) {
-            if(startId < endId)
-                return (key > startId && key <= endId);
-            else
-                return (key > startId || key <= endId);
-    }
-
-    private boolean isInBetweenOpenOpen(int key, int startId, int endId) {
-        if(startId < endId)
-            return (key > startId && key < endId);
-        else
-            return (key > startId || key < endId);
     }
 
     private boolean isInBetweenCloseOpen(int key, int startId, int endId) {
@@ -92,8 +84,7 @@ public class ChordNode {
     private ChordNode findPred(int key) {
         //find a node n' such that key lies between n'.id and n'successor.id
         ChordNode nPrime = this;
-        //should be strictly greater than nPrime but less than equal to succ of nPrime
-        while(!isInBetweenOpenClose(key, nPrime.id, nPrime.finger[0].getSuccessor().id)) {
+        while(!isInBetweenCloseOpen(key, nPrime.id, nPrime.finger[0].getSuccessor().id)) {
             nPrime = nPrime.closestPred(key);
         }
         return nPrime;
@@ -101,7 +92,7 @@ public class ChordNode {
 
     private ChordNode closestPred(int key) {
         for(int i = m - 1; i >= 0; i--) {
-            if(isInBetweenOpenOpen(finger[i].getSuccessor().id, this.id, key))
+            if(finger[i].getSuccessor().id != this.id && isInBetweenCloseOpen(finger[i].getSuccessor().id, this.id, key))
                 return finger[i].getSuccessor();
         }
         return this;
@@ -110,5 +101,18 @@ public class ChordNode {
     public ChordNode find(int key) {
         ChordNode nPrime = findPred(key);
         return nPrime.finger[0].getSuccessor();
+    }
+
+    public void printDataOnNode() {
+        System.out.println("Data on node: " + this.id);
+        System.out.println(this.data.toString());
+    }
+
+    public void insert(int key, int value) {
+        ChordNode location = this.find(key);
+        if(location.data == null) {
+            location.data = new HashMap<>();
+        }
+        location.data.put(key, value);
     }
 }
