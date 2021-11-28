@@ -7,7 +7,7 @@ build/
 
 ### custom logs folder ###
 logs/
-
+*.class
 
 ### STS ###
 .apt_generated
