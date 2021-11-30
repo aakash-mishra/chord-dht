@@ -209,5 +209,21 @@ public class ChordImpl implements ChordInterface{
             location.data = new HashMap<>();
         }
         location.data.put(key, value);
+        System.out.println("Key successfully inserted");
+        System.out.println("Updated data on the node:");
+        System.out.println(location.data.toString());
+    }
+
+    public void remove(int key) {
+        ChordImpl location = this.find(key, null);
+        if(location.data != null && location.data.containsKey(key)) {
+            location.data.remove(key);
+            System.out.println("Key " + key + " successfully removed.");
+            System.out.println("Updated data on the node:");
+            System.out.println(location.data.toString());
+        }
+        else {
+            System.out.println("Key does not exist in the network.");
+        }
     }
 }

@@ -42,6 +42,6 @@ public class Driver {
         n2.lookup(100);
         n5.lookup(102);
         n3.lookup(10000);
-
+        n2.remove(100);
     }
 }
