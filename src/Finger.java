@@ -1,3 +1,5 @@
+package src;
+
 public class Finger {
     private int start;
 
@@ -17,14 +19,14 @@ public class Finger {
         this.end = end;
     }
 
-    public ChordNode getSuccessor() {
+    public ChordImpl getSuccessor() {
         return successor;
     }
 
-    public void setSuccessor(ChordNode successor) {
+    public void setSuccessor(ChordImpl successor) {
         this.successor = successor;
     }
 
     private int end;
-    ChordNode successor;
+    ChordImpl successor;
 }
