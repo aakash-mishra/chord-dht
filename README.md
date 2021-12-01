@@ -1,4 +1,4 @@
-#Chord
+# Chord
 
 Chord is a peer-to-peer, distributed lookup system that uses concepts of Distributed Hash Tables and Consistent Hashing 
 to efficiently perform lookups in networks where nodes join and leave arbitrarily.  
