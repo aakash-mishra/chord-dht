@@ -1,13 +1,12 @@
 package src;
 
-public class Driver {
+public class TestDriver {
     public static void main(String[] args) {
 
         /***
          *
          * Below is a network with 8 nodes (m = 8)
          */
-
         ChordImpl n0 = new ChordImpl(0);
         ChordImpl n1 = new ChordImpl(30);
         ChordImpl n2 = new ChordImpl(65);
@@ -43,5 +42,6 @@ public class Driver {
         n5.lookup(102);
         n3.lookup(10000);
         n2.remove(100);
+
     }
 }

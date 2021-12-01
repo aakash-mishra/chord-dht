@@ -2,6 +2,7 @@ package src;
 
 import java.util.*;
 
+//import static src.Constants.m;
 import static src.Constants.m;
 
 public class ChordImpl implements ChordInterface{
@@ -13,6 +14,10 @@ public class ChordImpl implements ChordInterface{
 
     static {
         nodesInNetwork = new ArrayList<>();
+    }
+
+    public int getNodeId() {
+        return this.getId();
     }
 
     public ChordImpl(int id) {
@@ -36,6 +41,87 @@ public class ChordImpl implements ChordInterface{
 
     private int getId() {
         return this.id;
+    }
+
+    public static List<ChordImpl> getNodesInNetwork() {
+        return nodesInNetwork;
+    }
+    @Override
+    public void join(ChordImpl refNode) {
+        populateStartAndEndIntervals();
+        //this is the first node in the network
+        if(refNode == null) {
+            this.pred = this;
+            //successor = finger[0].successor;
+            nodesInNetwork.add(this);
+        }
+        else {
+            //updating succ and pred for new node and neighbors
+            ChordImpl succ = refNode.find(this.finger[0].getStart(), null);
+            finger[0].setSuccessor(succ);
+            this.pred = succ.pred;
+            succ.pred = this;
+
+            initalizeFingerTableForNewNode(refNode);
+            adjustFingerTableOfExistingNodes();
+            migrateAffectedKeys();
+
+            nodesInNetwork.add(this);
+
+            System.out.println("\n\nUpdated finger tables after node " + this.id + " joins the network");
+            System.out.println("-------------------------------------");
+            printFingerTables();
+        }
+    }
+
+    @Override
+    public void lookup(int key) {
+        System.out.println("Finding key: " + key);
+        List<Integer> path = new ArrayList<>();
+        path.add(this.id);
+        ChordImpl location = find(key, path);
+        if(location.data != null && !location.data.containsKey(key))
+            System.out.println("Given key does not exist in the network");
+        else {
+            System.out.println("Key found on Node " + location.id + ". Value mapped to key is: " + location.data.get(key));
+        }
+        System.out.println("Path taken to find the key:");
+        String prefix = "";
+        StringBuilder pathString = new StringBuilder();
+        pathString.append("[");
+        for(Integer node : path) {
+            pathString.append(prefix);
+            pathString.append(node.toString());
+            prefix = " -> ";
+        }
+        pathString.append("]");
+        System.out.println(pathString.toString());
+    }
+
+    @Override
+    public void insert(int key, int value) {
+        ChordImpl location = this.find(key, null);
+        if(location.data == null) {
+            location.data = new HashMap<>();
+        }
+        location.data.put(key, value);
+        System.out.println("Key successfully inserted");
+        System.out.println("Updated data on the node:");
+        System.out.println(location.data.toString());
+    }
+
+    @Override
+    public void remove(int key) {
+        ChordImpl location = this.find(key, null);
+        if(location.data != null && location.data.containsKey(key)) {
+            location.data.remove(key);
+            System.out.println("Key " + key + " successfully removed.");
+            System.out.println("Updated data on the node:");
+            System.out.println(location.data.toString());
+        }
+        else {
+            System.out.println("Key does not exist in the network.");
+        }
     }
 
     private void initalizeFingerTableForNewNode(ChordImpl refNode) {
@@ -75,31 +161,7 @@ public class ChordImpl implements ChordInterface{
         }
     }
 
-    public void join(ChordImpl refNode) {
-        populateStartAndEndIntervals();
-        //this is the first node in the network
-        if(refNode == null) {
-            this.pred = this;
-            //successor = finger[0].successor;
-        }
-        else {
-            //updating succ and pred for new node and neighbors
-            ChordImpl succ = refNode.find(this.finger[0].getStart(), null);
-            finger[0].setSuccessor(succ);
-            this.pred = succ.pred;
-            succ.pred = this;
 
-            initalizeFingerTableForNewNode(refNode);
-            adjustFingerTableOfExistingNodes();
-            migrateAffectedKeys();
-
-            nodesInNetwork.add(this);
-
-            System.out.println("\n\nUpdated finger tables after node " + this.id + " joins the network");
-            System.out.println("-------------------------------------");
-            printFingerTables();
-        }
-    }
     private void printFingerTables() {
         Collections.sort(nodesInNetwork, Comparator.comparingInt(ChordImpl::getId));
 
@@ -112,6 +174,7 @@ public class ChordImpl implements ChordInterface{
         }
 
     }
+
     private void updateFingerTable(ChordImpl s, int i) {
         int successorId = this.finger[i].getSuccessor().id;
         if(s.id != this.id) {
@@ -120,13 +183,6 @@ public class ChordImpl implements ChordInterface{
                 this.pred.updateFingerTable(s, i);
             }
         }
-    }
-
-    public void printFingerTable() {
-       for(int i = 0; i < m; i++) {
-           System.out.println("start: " + finger[i].getStart() + " end: " + finger[i].getEnd() +
-                                    " successor node id:" + finger[i].getSuccessor().id);
-       }
     }
 
     private boolean isInBetweenCloseOpen(int key, int startId, int endId) {
@@ -146,12 +202,6 @@ public class ChordImpl implements ChordInterface{
     private ChordImpl findPred(int key, List<Integer> path) {
         //find a node n' such that key lies between n'.id and n'successor.id
         ChordImpl nPrime = this;
-
-//        while(!isInBetweenCloseOpen(key, nPrime.id, nPrime.finger[0].getSuccessor().id)) {
-//            nPrime = nPrime.closestPred(key);
-//            if(path != null) path.add(nPrime.id);
-//        }
-
         while(!isInBetweenCloseClose(key, nPrime.id, nPrime.finger[0].getSuccessor().id)) {
             nPrime = nPrime.closestPred(key);
             if(path != null) path.add(nPrime.id);
@@ -180,50 +230,7 @@ public class ChordImpl implements ChordInterface{
         return res;
     }
 
-    public void lookup(int key) {
-        System.out.println("Finding key: " + key);
-        List<Integer> path = new ArrayList<>();
-        path.add(this.id);
-        ChordImpl location = find(key, path);
-        if(location.data != null && !location.data.containsKey(key))
-            System.out.println("Given key does not exist in the network");
-        else {
-            System.out.println("Key found on Node " + location.id + ". Value mapped to key is: " + location.data.get(key));
-        }
-        System.out.println("Path taken to find the key:");
-        String prefix = "";
-        StringBuilder pathString = new StringBuilder();
-        pathString.append("[");
-        for(Integer node : path) {
-            pathString.append(prefix);
-            pathString.append(node.toString());
-            prefix = " -> ";
-        }
-        pathString.append("]");
-        System.out.println(pathString.toString());
-    }
 
-    public void insert(int key, int value) {
-        ChordImpl location = this.find(key, null);
-        if(location.data == null) {
-            location.data = new HashMap<>();
-        }
-        location.data.put(key, value);
-        System.out.println("Key successfully inserted");
-        System.out.println("Updated data on the node:");
-        System.out.println(location.data.toString());
-    }
 
-    public void remove(int key) {
-        ChordImpl location = this.find(key, null);
-        if(location.data != null && location.data.containsKey(key)) {
-            location.data.remove(key);
-            System.out.println("Key " + key + " successfully removed.");
-            System.out.println("Updated data on the node:");
-            System.out.println(location.data.toString());
-        }
-        else {
-            System.out.println("Key does not exist in the network.");
-        }
-    }
+
 }
