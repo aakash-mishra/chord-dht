@@ -14,10 +14,6 @@ public class ChordImpl implements ChordInterface{
         nodesInNetwork = new ArrayList<>();
     }
 
-    public int getNodeId() {
-        return this.getId();
-    }
-
     public ChordImpl(int id) {
         this.id = id;
         this.pred = null;
@@ -37,7 +33,7 @@ public class ChordImpl implements ChordInterface{
         finger[m - 1].setEnd(finger[0].getStart() - 1);
     }
 
-    private int getId() {
+    public int getId() {
         return this.id;
     }
 

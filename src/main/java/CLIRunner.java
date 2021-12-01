@@ -26,7 +26,7 @@ public class CLIRunner {
                     ChordImpl refNode = null;
                     if(!nodesInNetwork.isEmpty()) {
                         refNode = nodesInNetwork.get(new Random().nextInt(nodesInNetwork.size()));
-                        System.out.println("Using reference node as: " + refNode.getNodeId());
+                        System.out.println("Using reference node as: " + refNode.getId());
                     }
                     ChordImpl newNode = new ChordImpl(nodeId);
                     newNode.join(refNode);
