@@ -1,9 +1,7 @@
-package src;
+package src.main.java;
 
 import java.util.*;
-
-//import static src.Constants.m;
-import static src.Constants.m;
+import static src.main.java.Constants.*;
 
 public class ChordImpl implements ChordInterface{
     static List<ChordImpl> nodesInNetwork;
@@ -137,7 +135,7 @@ public class ChordImpl implements ChordInterface{
         for(int i = 0; i < m; i++) {
             int predValue = this.id - (int)Math.pow(2, i);
             if(predValue < 0)
-                predValue = (int) Math.pow(2, m) + predValue;
+                predValue = (int) Math.pow(2, m + predValue);
             ChordImpl p = this.findPred(predValue, null);
             //want to make sure that we only update "other" nodes' FT
             if(p != this)

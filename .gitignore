@@ -5,6 +5,9 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 
+##mac specific
+*.DS_Store
+
 ### custom logs folder ###
 logs/
 *.class
@@ -39,3 +42,6 @@ out/
 
 ### VS Code ###
 .vscode/
+
+# Ignore Gradle build output directory
+build

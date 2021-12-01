@@ -1,6 +1,4 @@
-package src;
-
-import java.util.List;
+package src.main.java;
 
 public interface ChordInterface {
     void join(ChordImpl refNode);

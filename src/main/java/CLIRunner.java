@@ -1,12 +1,10 @@
-package src;
-
-import src.ChordImpl;
+package src.main.java;
 
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
-import static src.ChordImpl.getNodesInNetwork;
+import static src.main.java.ChordImpl.getNodesInNetwork;
 
 public class CLIRunner {
     public static void main(String[] args) {

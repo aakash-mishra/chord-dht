@@ -1,4 +1,4 @@
-package src;
+package src.main.java;
 
 public class Finger {
     private int start;
