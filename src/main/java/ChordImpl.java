@@ -15,7 +15,7 @@ public class ChordImpl implements ChordInterface{
     }
 
     public ChordImpl(int id) {
-        this.id = id;
+        this.id = id % (int)Math.pow(2, m);
         this.pred = null;
         this.finger = new Finger[m];
     }
@@ -74,7 +74,8 @@ public class ChordImpl implements ChordInterface{
         List<Integer> path = new ArrayList<>();
         path.add(this.id);
         ChordImpl location = find(key, path);
-        if(location.data != null && !location.data.containsKey(key))
+
+        if(location.data == null || !location.data.containsKey(key))
             System.out.println("Given key does not exist in the network");
         else {
             System.out.println("Key found on Node " + location.id + ". Value mapped to key is: " + location.data.get(key));

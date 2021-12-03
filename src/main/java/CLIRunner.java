@@ -10,6 +10,7 @@ public class CLIRunner {
     public static void main(String[] args) {
         boolean shouldContinue = true;
         while(shouldContinue) {
+            System.out.println("Please select an option from the menu below");
             System.out.println("1. Add a new node in the network (join)");
             System.out.println("2. Insert data (key, value)");
             System.out.println("3. Lookup data (key)");
@@ -20,7 +21,7 @@ public class CLIRunner {
             String choice = scanner.nextLine();
             switch (choice) {
                 case "1":
-                    System.out.println("Enter node identifier (integer between 0 to 255)");
+                    System.out.println("Enter node identifier");
                     int nodeId = Integer.parseInt(scanner.nextLine());
                     List<ChordImpl> nodesInNetwork = getNodesInNetwork();
                     ChordImpl refNode = null;

@@ -9,8 +9,11 @@ This project is a Java based implementation of the core functionalities of Chord
 For an in-depth understanding, refer the [Chord research paper](https://conferences.sigcomm.org/sigcomm/2001/p12-stoica.pdf).
 
 ## How to run (CLI)
-Open up a terminal, and:
+After cloning the project, open up a terminal and from the project root directory issue the following commands:
 1. `./gradlew build`
 2. `./gradlew --console plain run` (--console plain removes unnecessary logs)
 
+![build and run commands](static/build-run.png)  
   
+ Then, use the CLI options to interact with the application (1 to join a new node, 2 to insert data, etc..)  
+ ![CLI](static/cli.png)
